@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EnvService } from '../env/env.service';
-import { ApiService } from '../api/api.service';
+import { ApiService, Track } from '../api/api.service';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-spotify-search',
@@ -11,14 +16,16 @@ import { ApiService } from '../api/api.service';
 export class SpotifySearchComponent implements OnInit {
   playlistForm: FormGroup;
   resultLoading = false;
+  songs: Track[] = [];
 
   constructor(
     private readonly envService: EnvService,
-    private readonly apiService: ApiService
+    private readonly apiService: ApiService,
+    private readonly dialog: MatDialog
   ) {
     this.playlistForm = new FormGroup({
       playlist: new FormControl('', Validators.required),
-      playlistResults: new FormControl([]),
+      playlistResults: new FormControl(''),
     });
   }
 
@@ -47,10 +54,15 @@ export class SpotifySearchComponent implements OnInit {
     return this.playlistForm.controls.playlist.value;
   }
 
+  get hasSongs(): boolean {
+    return this.results.value?.split('\n').length > 0;
+  }
+
   onSearch() {
     const playlist = this.playlist.replace('spotify:playlist:', '');
     this.resultLoading = true;
     this.apiService.startGettingPlaylistTracks(playlist).then((res) => {
+      this.songs = res;
       this.results.setValue(
         res
           .map((item) => `${item.name} by ${item.artists.join(', ')}`)
@@ -59,4 +71,23 @@ export class SpotifySearchComponent implements OnInit {
       this.resultLoading = false;
     });
   }
+
+  pickRandomSong() {
+    const song = this.songs[Math.floor(Math.random() * this.songs.length)];
+    this.dialog.open(SpotifyDialogComponent, {
+      width: '250px',
+      data: { name: song.name, artists: song.artists.join(', ') },
+    });
+  }
+}
+
+@Component({
+  selector: 'app-spotify-dialog',
+  template: `<h1 mat-dialog-title>{{ data.name }} by {{ data.artists }}</h1>`,
+})
+export class SpotifyDialogComponent {
+  constructor(
+    public dialogRef: MatDialogRef<SpotifyDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { name: string; artists: string }
+  ) {}
 }
