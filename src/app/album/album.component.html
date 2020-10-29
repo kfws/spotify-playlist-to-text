@@ -1,0 +1,17 @@
+<div class="container">
+  <form class="text-center" [formGroup]="playlistForm" (ngSubmit)="onSearch()">
+    <div>
+      <mat-form-field>
+        <input matInput autocomplete="off" formControlName="playlist" placeholder="Spotify Playlist ID">
+      </mat-form-field>
+    </div>
+    <div class="pb-1">
+      <button mat-raised-button color="primary" class="mb-2">Go!</button>
+      <div [class.hidden]="!resultLoading">
+        <mat-spinner color="accent"></mat-spinner>
+      </div>
+      <div [class.hidden]="resultLoading"></div>
+    </div>
+    <textarea cols="50" rows="20" formControlName="playlistResults"></textarea>
+  </form>
+</div>
