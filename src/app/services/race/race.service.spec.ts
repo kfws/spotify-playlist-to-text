@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EnvService } from './env.service';
+import { RaceService } from './race.service';
 
-describe('EnvService', () => {
-  let service: EnvService;
+describe('RaceService', () => {
+  let service: RaceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EnvService);
+    service = TestBed.inject(RaceService);
   });
 
   it('should be created', () => {

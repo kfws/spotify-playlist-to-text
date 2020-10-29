@@ -1,0 +1,5 @@
+<div class="racing-container">
+  <div *ngFor="let racer of racers; let index = index">
+    <img [src]="racer.image" [alt]="getRacer(index)" class="racer" [style.left.px]="racer.offset">
+  </div>
+</div>

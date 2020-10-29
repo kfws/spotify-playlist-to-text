@@ -12,7 +12,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { RaceComponent } from './race/race.component';
+import { ResultsComponent } from './results/results.component';
+import { AlbumComponent } from './album/album.component';
 
 const materialModules = [
   MatInputModule,
@@ -23,7 +26,13 @@ const materialModules = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, SpotifySearchComponent],
+  declarations: [
+    AppComponent,
+    SpotifySearchComponent,
+    RaceComponent,
+    ResultsComponent,
+    AlbumComponent,
+  ],
   imports: [
     BrowserModule,
     FormsModule,

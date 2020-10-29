@@ -1,12 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EnvService } from '../env/env.service';
-import { ApiService, Track } from '../api/api.service';
+import { EnvService } from '../services/env/env.service';
+import { ApiService } from '../services/api/api.service';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { RaceService } from '../services/race/race.service';
+import { Track } from '../models/track.model';
 
 @Component({
   selector: 'app-spotify-search',
@@ -21,7 +23,8 @@ export class SpotifySearchComponent implements OnInit {
   constructor(
     private readonly envService: EnvService,
     private readonly apiService: ApiService,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly raceService: RaceService
   ) {
     this.playlistForm = new FormGroup({
       playlist: new FormControl('', Validators.required),
@@ -55,7 +58,8 @@ export class SpotifySearchComponent implements OnInit {
   }
 
   get hasSongs(): boolean {
-    return this.results.value?.split('\n').length > 0;
+    console.log(this.results.value?.split('\n')?.filter(Boolean));
+    return this.results.value?.split('\n')?.filter(Boolean).length;
   }
 
   onSearch() {
@@ -73,11 +77,17 @@ export class SpotifySearchComponent implements OnInit {
   }
 
   pickRandomSong() {
-    const song = this.songs[Math.floor(Math.random() * this.songs.length)];
-    this.dialog.open(SpotifyDialogComponent, {
-      width: '250px',
-      data: { name: song.name, artists: song.artists.join(', ') },
-    });
+    if (this.songs.length) {
+      const song = this.songs[Math.floor(Math.random() * this.songs.length)];
+      this.dialog.open(SpotifyDialogComponent, {
+        width: '250px',
+        data: { name: song.name, artists: song.artists.join(', ') },
+      });
+    }
+  }
+
+  showRace() {
+    this.raceService.goToRace(this.songs);
   }
 }
 

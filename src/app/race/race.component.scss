@@ -1,0 +1,16 @@
+.racer {
+  width: 50px;
+  height: 9vh;
+  position: relative;
+}
+
+.racing-container {
+  width: calc(100% - 2em);
+  height: 100%;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+img {
+  border-radius: 50%;
+}
