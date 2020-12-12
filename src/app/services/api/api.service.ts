@@ -41,6 +41,7 @@ export class ApiService {
   }
 
   async getPlaylistTracks(next: string): Promise<Track[]> {
+    let accessTokenError = null;
     while (next !== null) {
       next = await this.http
         .get(next)
@@ -59,14 +60,26 @@ export class ApiService {
           }
           return tracks.next;
         })
-        .catch(async (err) => {
+        .catch(async (err: HttpErrorToken) => {
           console.log('caught error', err);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          return next;
+          if (err?.error?.error?.message.includes('access token expired')) {
+            accessTokenError = err;
+            return null;
+          } else {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            return next;
+          }
         });
     }
-    this.loading = false;
-    return this.allTracks;
+    if (accessTokenError) {
+      document.location.href = document.location.href.substring(
+        0,
+        document.location.href.indexOf('#')
+      );
+    } else {
+      this.loading = false;
+      return this.allTracks;
+    }
   }
 
   getRandomImage() {
@@ -78,4 +91,13 @@ export class ApiService {
     }
     return 'assets/eighth.png';
   }
+}
+
+interface HttpErrorToken {
+  error?: {
+    error?: {
+      message: string;
+      status: number;
+    };
+  };
 }
