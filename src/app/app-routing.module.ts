@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
-import { RaceComponent } from './race/race.component';
+import { SpotifySearchComponent } from './components/spotify-search/spotify-search.component';
+import { RaceComponent } from './components/race/race.component';
 import { RaceService } from './services/race/race.service';
-import { ResultsComponent } from './results/results.component';
-import { AlbumComponent } from './album/album.component';
+import { ResultsComponent } from './components/results/results.component';
+import { AlbumComponent } from './components/album/album.component';
+import { CustomResultsComponent } from './custom-results/custom-results.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
   },
   { path: 'race', component: RaceComponent, canActivate: [RaceService] },
   { path: 'results', component: ResultsComponent, canActivate: [RaceService] },
+  {
+    path: 'custom-results',
+    component: CustomResultsComponent,
+    canActivate: [RaceService],
+  },
 ];
 
 @NgModule({

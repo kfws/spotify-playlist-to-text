@@ -10,12 +10,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SpotifySearchComponent } from './spotify-search/spotify-search.component';
+import { SpotifySearchComponent } from './components/spotify-search/spotify-search.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { RaceComponent } from './race/race.component';
-import { ResultsComponent } from './results/results.component';
-import { AlbumComponent } from './album/album.component';
+import { RaceComponent } from './components/race/race.component';
+import { ResultsComponent } from './components/results/results.component';
+import { AlbumComponent } from './components/album/album.component';
+import { CustomRankingComponent } from './components/custom-ranking/custom-ranking.component';
+import { SongsComponent } from './components/songs/songs.component';
+import { CustomResultsComponent } from './custom-results/custom-results.component';
 
 const materialModules = [
   MatInputModule,
@@ -32,6 +35,9 @@ const materialModules = [
     RaceComponent,
     ResultsComponent,
     AlbumComponent,
+    CustomRankingComponent,
+    SongsComponent,
+    CustomResultsComponent,
   ],
   imports: [
     BrowserModule,

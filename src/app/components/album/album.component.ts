@@ -1,44 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Track } from '../models/track.model';
-import { EnvService } from '../services/env/env.service';
-import { ApiService } from '../services/api/api.service';
+import { Track } from '../../models/track.model';
+import { EnvService } from '../../services/env/env.service';
+import { ApiService } from '../../services/api/api.service';
 
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
 })
-export class AlbumComponent implements OnInit {
-  playlistForm: FormGroup;
+export class AlbumComponent {
+  playlistForm = new FormGroup({
+    playlist: new FormControl('', Validators.required),
+    playlistResults: new FormControl(''),
+  });
   resultLoading = false;
   songs: Track[] = [];
 
   constructor(
     private readonly envService: EnvService,
     private readonly apiService: ApiService
-  ) {
-    this.playlistForm = new FormGroup({
-      playlist: new FormControl('', Validators.required),
-      playlistResults: new FormControl(''),
-    });
-  }
-
-  ngOnInit(): void {
-    if (!window.location.hash) {
-      const state = Math.round(Math.random() * 100000).toString();
-      localStorage.setItem('state', state);
-      window.location.replace(
-        `https://accounts.spotify.com/authorize` +
-          `?response_type=token` +
-          `&client_id=${this.envService.clientID}` +
-          `&scope=${this.envService.permissions}` +
-          `&redirect_uri=${this.envService.url}` +
-          `&state=${state}`
-      );
-    } else {
-      this.apiService.parseHash(window.location.hash);
-    }
-  }
+  ) {}
 
   get results() {
     return this.playlistForm.controls.playlistResults;
@@ -49,7 +30,9 @@ export class AlbumComponent implements OnInit {
   }
 
   get hasSongs(): boolean {
-    return this.results.value?.split('\n').length > 0;
+    return (
+      (this.results.value as string)?.split('\n').filter(Boolean).length > 0
+    );
   }
 
   onSearch() {

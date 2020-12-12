@@ -16,8 +16,8 @@ interface PlaylistItem {
 export interface Track {
   artists: string[];
   name: string;
-  image: string;
-  album: string;
+  image?: string;
+  album?: string;
 }
 
 interface Image {

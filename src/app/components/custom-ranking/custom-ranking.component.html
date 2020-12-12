@@ -1,0 +1,13 @@
+<form class="text-center" [formGroup]="playlistForm">
+  <textarea cols="50" rows="20" formControlName="playlistResults"></textarea>
+  <div>
+    <input type="file" accept="image/*" (change)="onChange($event)">
+  </div>
+  <div [class.hidden]="!hasSongs">
+    <div class="py-05">
+      <button mat-raised-button color="primary" (click)="generate()">
+        Generate List
+      </button>
+    </div>
+  </div>
+</form>

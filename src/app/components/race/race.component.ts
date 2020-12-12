@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-import { Racer } from '../models/racer.model';
-import { RaceService } from '../services/race/race.service';
+import { Racer } from '../../models/racer.model';
+import { RaceService } from '../../services/race/race.service';
 
 @Component({
   selector: 'app-race',

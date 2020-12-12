@@ -8,6 +8,8 @@ import { Racer } from 'src/app/models/racer.model';
 })
 export class RaceService implements CanActivate {
   tracks: Track[] = [];
+  customTracklist: string[] = [];
+  customBackground: any;
   private Winner: Racer = null;
   constructor(private readonly router: Router) {}
 
@@ -24,6 +26,23 @@ export class RaceService implements CanActivate {
 
   goToHome() {
     this.router.navigateByUrl('/');
+  }
+
+  goToCustomResults(tracks: string[], background: any) {
+    if (tracks.length) {
+      console.log('here');
+      this.customTracklist = tracks;
+      if (background) {
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+          this.customBackground = `url("${fileReader.result}")`;
+          this.router.navigateByUrl('/custom-results');
+        };
+        fileReader.readAsDataURL(background);
+      } else {
+        this.router.navigateByUrl('/custom-results');
+      }
+    }
   }
 
   private clone<T>(array: T[]) {
@@ -53,7 +72,11 @@ export class RaceService implements CanActivate {
   }
 
   canActivate() {
-    if (this.winner || this.tracks.length > 1) {
+    if (
+      this.winner ||
+      this.tracks.length > 1 ||
+      this.customTracklist.length > 1
+    ) {
       return true;
     } else {
       this.router.navigateByUrl('/');

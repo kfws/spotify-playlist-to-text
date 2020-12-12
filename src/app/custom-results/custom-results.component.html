@@ -1,0 +1,12 @@
+<div *ngIf="background" class="container">
+  <div [style.background-image]="background" class="image container">
+    <ol class="pt-2">
+      <li *ngFor="let track of tracks">{{track}}</li>
+    </ol>
+  </div>
+</div>
+<div *ngIf="!background" class="container">
+  <ol>
+    <li *ngFor="let track of tracks">{{track}}</li>
+  </ol>
+</div>
